@@ -1,0 +1,5 @@
+{
+  "name": "Migraine Forecast",
+  "description": "Vaporwave-style migraine prediction tool based on atmospheric pressure changes.",
+  "requestFramePermissions": ["camera"]
+}

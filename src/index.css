@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --head-x: 0;
+  --head-y: 0;
+}
+
+@theme {
+  --font-sans: "MS Sans Serif", "Inter", "Helvetica", "Arial", sans-serif;
+  --font-mono: "Courier New", "Courier", monospace;
+  
+  --color-win95-bg: #c0c0c0;
+  --color-win95-blue: #000080;
+  --color-win95-teal: #008080;
+  --color-vapor-blue: #0000FF;
+  --color-vapor-pink: #FF00FF;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-black font-sans selection:bg-win95-blue selection:text-white;
+  }
+
+  h1, h2, h3 {
+    @apply uppercase font-bold tracking-tighter;
+  }
+}
+
+@layer components {
+  .win95-border {
+    @apply bg-win95-bg border-t-2 border-l-2 border-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0px_0px_rgba(0,0,0,1)];
+  }
+
+  .win95-border-inset {
+    @apply bg-white border-t-2 border-l-2 border-[#808080] border-r-2 border-b-2 border-white shadow-inner;
+  }
+
+  .win95-window {
+    @apply bg-win95-bg border-t-2 border-l-2 border-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] overflow-hidden;
+  }
+
+  .win95-title-bar {
+    @apply bg-win95-blue text-white px-1 py-0.5 flex justify-between items-center text-[12px] font-bold;
+  }
+
+  .win95-button {
+    @apply bg-win95-bg border-t-2 border-l-2 border-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white active:pt-[3px] active:pl-[3px] active:pb-[1px] active:pr-[1px];
+  }
+
+  .glitch-text {
+    text-shadow: 2px 0 #FF00FF, -2px 0 #0000FF;
+  }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.animate-glitch {
+  animation: glitch 0.2s infinite;
+}
