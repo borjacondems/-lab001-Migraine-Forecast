@@ -4,7 +4,6 @@ export const CameraBackground = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [error, setError] = useState<string | null>(null);
-  const headPosRef = useRef({ x: 0.5, y: 0.5 });
 
   useEffect(() => {
     const startCamera = async () => {
@@ -51,56 +50,6 @@ export const CameraBackground = () => {
         if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
-        }
-
-        // --- 1. Head Tracking (on a small scale for performance) ---
-        const trackScale = 0.1;
-        const tw = Math.ceil(canvas.width * trackScale);
-        const th = Math.ceil(canvas.height * trackScale);
-        
-        // Use a temporary offscreen canvas for tracking if needed, 
-        // but for simplicity we can just use a small draw call here 
-        // and then overwrite it with the full-res video.
-        ctx.save();
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(video, 0, 0, tw, th);
-        const imageData = ctx.getImageData(0, 0, tw, th);
-        const data = imageData.data;
-        ctx.restore();
-
-        let totalX = 0;
-        let totalY = 0;
-        let totalWeight = 0;
-        let avgBrightness = 0;
-        for (let i = 0; i < data.length; i += 4) {
-          avgBrightness += (data[i] + data[i+1] + data[i+2]) / 3;
-        }
-        avgBrightness /= (data.length / 4);
-
-        const threshold = Math.max(60, avgBrightness * 1.2);
-
-        for (let y = 0; y < th; y++) {
-          for (let x = 0; x < tw; x++) {
-            const idx = (y * tw + x) * 4;
-            const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
-            if (brightness > threshold) {
-              const weight = Math.pow(brightness / 255, 2);
-              totalX += x * weight;
-              totalY += y * weight;
-              totalWeight += weight;
-            }
-          }
-        }
-
-        if (totalWeight > 0) {
-          const targetX = totalX / totalWeight / tw;
-          const targetY = totalY / totalWeight / th;
-          headPosRef.current.x += (targetX - headPosRef.current.x) * 0.1;
-          headPosRef.current.y += (targetY - headPosRef.current.y) * 0.1;
-          const invX = 1 - headPosRef.current.x;
-          const y = headPosRef.current.y;
-          document.documentElement.style.setProperty('--head-x', `${(invX - 0.5) * 2.5}`);
-          document.documentElement.style.setProperty('--head-y', `${(y - 0.5) * 2.5}`);
         }
 
         // --- 2. Full Resolution Video Background with Glitches ---

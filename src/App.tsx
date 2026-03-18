@@ -394,16 +394,12 @@ export default function App() {
             <motion.div
               key="result"
               initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1
-            }}
-            style={{
-              x: 'calc(var(--head-x, 0) * 200px)',
-              y: 'calc(var(--head-y, 0) * 140px)'
-            }}
-            className="w-full flex flex-col items-center"
-          >
+              animate={{ 
+                opacity: 1, 
+                scale: 1
+              }}
+              className="w-full flex flex-col items-center"
+            >
             <RetroWindow 
               title="ANALYSIS_COMPLETE.LOG" 
               initialWidth="480px" 
